@@ -112,6 +112,7 @@ run "yum -y install \
 	php-xml \
 	php-xmlrpc \
 	\
+	php-pecl-apcu \
 	php-pecl-imagick \
 	php-pecl-uploadprogress \
 	php-pecl-xdebug \

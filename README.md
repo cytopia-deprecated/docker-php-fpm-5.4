@@ -30,6 +30,7 @@
 |----------|------|---------|------------|
 | DEBUG_COMPOSE_ENTRYPOINT | bool | `0` | Show shell commands executed during start.<br/>Value: `0` or `1` |
 | TIMEZONE | string | `UTC` | Set docker OS timezone as well as PHP timezone.<br/>(Example: `Europe/Berlin`) |
+| ENABLE_MAIL | bool | `0` | Allow sending emails. Postfix will be configured for local delivery and all sent mails (even to real domains) will be catched locally. No email will ever go out. They will all be stored in a local `mailtrap` account.<br/>Value: `0` or `1` |
 | FORWARD_MYSQL_PORT_TO_LOCALHOST | bool | `0` | Forward a remote MySQL server port to listen on this docker on `127.0.0.1`<br/>Value: `0` or `1` |
 | MYSQL_REMOTE_ADDR | string | `` | The remote IP address of the MySQL host from which to port-forward.<br/>This is required if $FORWARD_MYSQL_PORT_TO_LOCALHOST is turned on. |
 | MYSQL_REMOTE_PORT | int | `` | The remote port of the MySQL host from which to port-forward.<br/>This is required if $FORWARD_MYSQL_PORT_TO_LOCALHOST is turned on. |
@@ -46,6 +47,7 @@
 |--------|-------------|
 | /var/log/php-fpm | PHP-FPM log dir |
 | /etc/php-custom.d | Custom user configuration files. Make sure to mount this folder to your host, where you have custom `*.ini` files. These files will then be copied to `/etc/php.d` during startup. |
+| /var/mail | Mail mbox directory |
 
 ### Default ports
 
@@ -107,3 +109,31 @@ $ docker run -i \
     -t cytopia/php-fpm-5.4
 ```
 
+**5. Launch Postfix for mail-catching**
+
+Once you `$ENABLE_MAIL=1`, all mails sent via any of your PHP applications no matter to which domain, are catched locally into the `mailtrap` account. You can also mount the mail directory locally to hook in with `mutt` and read those mails.
+```bash
+$ docker run -i \
+    -p 127.0.0.1:9000:9000 \
+	-v /tmp/mail:/var/mail \
+    -e TIMEZONE=Europe/Berlin \
+	-e ENABLE_MAIL=1 \
+    -t cytopia/php-fpm-5.4
+```
+
+## Modules
+
+**[Version]**
+
+PHP 5.4.45 (cli) (built: Sep 19 2016 15:19:43) 
+Copyright (c) 1997-2014 The PHP Group
+Zend Engine v2.4.0, Copyright (c) 1998-2014 Zend Technologies
+    with Zend OPcache v7.0.5, Copyright (c) 1999-2015, by Zend Technologies
+
+**[PHP Modules]**
+
+apc, apcu, bcmath, bz2, calendar, Core, ctype, curl, date, dom, ereg, exif, fileinfo, filter, ftp, gd, gettext, gmp, hash, iconv, imagick, imap, intl, json, ldap, libxml, magickwand, mbstring, mcrypt, mhash, mysql, mysqli, mysqlnd, openssl, pcntl, pcre, PDO, pdo_mysql, pdo_sqlite, Phar, posix, pspell, readline, recode, Reflection, session, shmop, SimpleXML, soap, sockets, SPL, sqlite3, standard, sysvmsg, sysvsem, sysvshm, tidy, tokenizer, uploadprogress, wddx, xml, xmlreader, xmlrpc, xmlwriter, xsl, Zend OPcache, zip, zlib
+
+**[Zend Modules]**
+
+Zend OPcache
