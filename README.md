@@ -125,7 +125,7 @@ $ docker run -i \
 
 **[Version]**
 
-PHP 5.4.45 (cli) (built: Sep 19 2016 15:19:43) 
+PHP 5.4.45 (cli) (built: Feb 18 2017 15:44:23)
 Copyright (c) 1997-2014 The PHP Group
 Zend Engine v2.4.0, Copyright (c) 1998-2014 Zend Technologies
     with Zend OPcache v7.0.5, Copyright (c) 1999-2015, by Zend Technologies
