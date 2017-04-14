@@ -104,9 +104,10 @@ run "yum -y install \
 	php-mysqli \
 	php-mysqlnd \
 	php-opcache \
-	php-pear \
 	php-pdo \
+	php-pear \
 	php-pgsql \
+	php-phalcon2 \
 	php-pspell \
 	php-recode \
 	php-redis \
