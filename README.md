@@ -1,6 +1,6 @@
 # PHP-FPM 5.4 Docker
 
-<small>**Latest build:** 2017-04-15</small>
+<small>**Latest build:** 2017-04-17</small>
 
 [![Build Status](https://travis-ci.org/cytopia/docker-php-fpm-5.4.svg?branch=master)](https://travis-ci.org/cytopia/docker-php-fpm-5.4) [![](https://images.microbadger.com/badges/version/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/image/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/license/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4")
 
@@ -31,6 +31,9 @@
 | Variable | Type | Default |Description |
 |----------|------|---------|------------|
 | DEBUG_COMPOSE_ENTRYPOINT | bool | `0` | Show shell commands executed during start.<br/>Value: `0` or `1` |
+| DOCKER_LOGS_ERROR | bool | `0` | Log errors to `docker logs` instead of file inside container.<br/>Value: `0` or `1` |
+| DOCKER_LOGS_ACCESS | bool | `0` | Log access to `docker logs` instead of file inside container.<br/>Value: `0` or `1` |
+| DOCKER_LOGS_XDEBUG | bool | `0` | Log php xdebug to `docker logs` instead of file inside container.<br/>Value: `0` or `1` |
 | TIMEZONE | string | `UTC` | Set docker OS timezone as well as PHP timezone.<br/>(Example: `Europe/Berlin`) |
 | ENABLE_MAIL | bool | `0` | Allow sending emails. Postfix will be configured for local delivery and all sent mails (even to real domains) will be catched locally. No email will ever go out. They will all be stored in a local `mailtrap` account.<br/>Value: `0` or `1` |
 | FORWARD_MYSQL_PORT_TO_LOCALHOST | bool | `0` | Forward a remote MySQL server port to listen on this docker on `127.0.0.1`<br/>Value: `0` or `1` |
@@ -127,10 +130,7 @@ $ docker run -i \
 
 **[Version]**
 
-PHP 5.4.45 (cli) (built: Feb 18 2017 15:44:23)
-Copyright (c) 1997-2014 The PHP Group
-Zend Engine v2.4.0, Copyright (c) 1998-2014 Zend Technologies
-    with Zend OPcache v7.0.5, Copyright (c) 1999-2015, by Zend Technologies
+rpc error: code = 2 desc = oci runtime error: exec failed: container_linux.go:247: starting container process caused "process_linux.go:92: setting oom score caused \"write /proc/24936/oom_score_adj: invalid argument\""
 
 **[PHP Modules]**
 
