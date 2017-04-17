@@ -496,4 +496,4 @@ run "find ${PHP_FPM_LOG_DIR} -type f -exec chmod 0666 {} \;"
 ### Start
 ###
 log "info" "Starting $(php-fpm -v 2>&1 | head -1)"
-exec /usr/sbin/php-fpm --force-stderr
+exec /usr/sbin/php-fpm
