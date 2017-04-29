@@ -26,11 +26,15 @@ env:
 ###
 before_install:
   # List versions
-  - docker version
-  - docker-compose version
   - whoami
   - groups
   - uname -a
+  - docker version
+  - docker-compose version
+  # Get newer docker version
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
+  - docker version
 
 
 ###
