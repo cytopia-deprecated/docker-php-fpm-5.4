@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-04-19"
+	build-date="2017-04-27"
 
 
 ###
@@ -21,12 +21,22 @@ LABEL \
 ###
 
 # User/Group
-ENV MY_USER="apache"
-ENV MY_GROUP="apache"
-ENV MY_UID="48"
-ENV MY_GID="48"
+ENV MY_USER="devilbox"
+ENV MY_GROUP="devilbox"
+ENV MY_UID="1000"
+ENV MY_GID="1000"
+
+# User PHP config directories
+ENV MY_CFG_DIR_PHP_CUSTOM="/etc/php-custom.d"
 
 # Log files
+ENV MY_LOG_DIR="/var/log/php"
+ENV MY_LOG_FILE_ERR="${MY_LOG_DIR}/php-fpm.err"
+ENV MY_LOG_FILE_XDEBUG="${MY_LOG_DIR}/xdebug.log"
+ENV MY_LOG_FILE_POOL_ACC="${MY_LOG_DIR}/www-access.log"
+ENV MY_LOG_FILE_POOL_ERR="${MY_LOG_DIR}/www-error.log"
+ENV MY_LOG_FILE_POOL_SLOW="${MY_LOG_DIR}/www-slow.log"
+
 ENV PHP_FPM_LOG_DIR="/var/log/php-fpm"
 ENV PHP_FPM_POOL_LOG_ERR="/var/log/php-fpm/www-error.log"
 ENV PHP_FPM_POOL_LOG_ACC="/var/log/php-fpm/www-access.log"
@@ -38,8 +48,9 @@ ENV PHP_LOG_XDEBUG="/var/log/php-fpm/xdebug.log"
 ###
 ### Install
 ###
-RUN groupadd -g ${MY_GID} -r ${MY_GROUP} &&\
-	adduser ${MY_USER} -u ${MY_UID} -M -s /sbin/nologin -g ${MY_GROUP}
+RUN \
+	groupadd -g ${MY_GID} -r ${MY_GROUP} && \
+	adduser -u ${MY_UID} -M -s /sbin/nologin -g ${MY_GROUP} ${MY_USER}
 
 RUN \
 	yum -y install epel-release && \
@@ -118,7 +129,7 @@ EXPOSE 9000
 ##
 ## Volumes
 ##
-VOLUME /var/log/php-fpm
+VOLUME /var/log/php
 VOLUME /etc/php-custom.d
 VOLUME /var/mail
 
