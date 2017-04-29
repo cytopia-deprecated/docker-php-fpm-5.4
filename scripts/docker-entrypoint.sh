@@ -149,8 +149,8 @@ fi
 ### Change UID
 ###
 if ! set | grep '^NEW_UID=' >/dev/null 2>&1; then
-	log "info" "\$NEW_UID not set"
-	log "info" "Keeping user '${MY_USER}' with default uid: ${MY_UID}"
+	log "warn" "\$NEW_UID not set"
+	log "warn" "Keeping user '${MY_USER}' with default uid: ${MY_UID}"
 else
 	if ! isint "${NEW_UID}"; then
 		log "err" "\$NEW_UID is not an integer: '${NEW_UID}'"
@@ -167,8 +167,8 @@ fi
 ### Change GID
 ###
 if ! set | grep '^NEW_GID=' >/dev/null 2>&1; then
-	log "info" "\$NEW_GID not set"
-	log "info" "Keeping group '${MY_GROUP}' with default gid: ${MY_GID}"
+	log "warn" "\$NEW_GID not set"
+	log "warn" "Keeping group '${MY_GROUP}' with default gid: ${MY_GID}"
 else
 	if ! isint "${NEW_GID}"; then
 		log "err" "\$NEW_GID is not an integer: '${NEW_GID}'"
@@ -188,8 +188,8 @@ if ! set | grep '^DOCKER_LOGS_ERROR=' >/dev/null 2>&1 || [ "${DOCKER_LOGS_ERROR}
 
 	# Why was it not enabled?
 	if ! set | grep '^DOCKER_LOGS_ERROR=' >/dev/null 2>&1; then
-		log "info" "\$DOCKER_LOGS_ERROR not set."
-		log "info" "Not logging errors to docker logs, using file inside container"
+		log "warn" "\$DOCKER_LOGS_ERROR not set."
+		log "warn" "Not logging errors to docker logs, using file inside container"
 	elif [ "${DOCKER_LOGS_ERROR}" = "0" ]; then
 		log "info" "Not logging errors to docker logs, using file inside container"
 	else
@@ -247,8 +247,8 @@ if ! set | grep '^DOCKER_LOGS_ACCESS=' >/dev/null 2>&1 || [ "${DOCKER_LOGS_ACCES
 
 	# Why was it not enabled?
 	if ! set | grep '^DOCKER_LOGS_ACCESS=' >/dev/null 2>&1; then
-		log "info" "\$DOCKER_LOGS_ACCESS not set."
-		log "info" "Not logging access to docker logs, using file inside container"
+		log "warn" "\$DOCKER_LOGS_ACCESS not set."
+		log "warn" "Not logging access to docker logs, using file inside container"
 	elif [ "${DOCKER_LOGS_ACCESS}" = "0" ]; then
 		log "info" "Not logging access to docker logs, using file inside container"
 	else
@@ -288,8 +288,8 @@ if ! set | grep '^DOCKER_LOGS_XDEBUG=' >/dev/null 2>&1 || [ "${DOCKER_LOGS_XDEBU
 
 	# Why was it not enabled?
 	if ! set | grep '^DOCKER_LOGS_XDEBUG=' >/dev/null 2>&1; then
-		log "info" "\$DOCKER_LOGS_XDEBUG not set."
-		log "info" "Not logging xdebug to docker logs, using file inside container"
+		log "warn" "\$DOCKER_LOGS_XDEBUG not set."
+		log "warn" "Not logging xdebug to docker logs, using file inside container"
 	elif [ "${DOCKER_LOGS_XDEBUG}" = "0" ]; then
 		log "info" "Not logging xdebug to docker logs, using file inside container"
 	else
@@ -326,8 +326,8 @@ fi
 ### Adjust timezone
 ###
 if ! set | grep '^TIMEZONE='  >/dev/null 2>&1; then
-	log "info" "\$TIMEZONE not set."
-	log "info" "Setting PHP: timezone=UTC"
+	log "warn" "\$TIMEZONE not set."
+	log "warn" "Setting PHP: timezone=UTC"
 	run "sed -i'' 's|;*date.timezone[[:space:]]*=.*$|date.timezone = UTC|g' /etc/php.ini"
 else
 	if [ -f "/usr/share/zoneinfo/${TIMEZONE}" ]; then
@@ -449,8 +449,8 @@ fi
 ### Port forwarding
 ###
 if ! set | grep '^FORWARD_PORTS_TO_LOCALHOST=' >/dev/null 2>&1; then
-	log "info" "\$FORWARD_PORTS_TO_LOCALHOST not set."
-	log "info" "Not ports from other machines will be forwarded to 127.0.0.1 inside this docker"
+	log "warn" "\$FORWARD_PORTS_TO_LOCALHOST not set."
+	log "warn" "Not ports from other machines will be forwarded to 127.0.0.1 inside this docker"
 else
 	# Transform into newline separated forwards:
 	#   local-port:host:remote-port\n
