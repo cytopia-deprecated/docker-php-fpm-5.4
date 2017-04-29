@@ -106,20 +106,20 @@ $ docker run -i \
 
 **5. MySQL connect via localhost (via socket mount)**
 
-Mount a MySQL socket from `~/run/mysqld/mysqld.sock` (on your host) into the PHP docker to `/tmp/mysqld.sock`.
+Mount a MySQL socket from `~/run/mysqld/mysqld.sock` (on your host) into the PHP docker to `/tmp/mysql/mysqld.sock`.
 By this, your PHP files inside the docker can use `localhost` to connect to a MySQL database.
 In order to make php aware of new path of the mysql socket, we will also have to create a php config file and mount it into the container.
 
 ```shell
 # Show local custom php config
 $ cat ~/tmp/cfg/php/my-config.ini
-mysql.default_socket = /tmp//mysqld.sock
-mysqli.default_socket = /tmp/mysqld.sock
-pdo_mysql.default_socket = /tmp/mysqld.sock
+mysql.default_socket = /tmp/mysql/mysqld.sock
+mysqli.default_socket = /tmp/mysql/mysqld.sock
+pdo_mysql.default_socket = /tmp/mysql/mysqld.sock
 
 # Start container with mounted socket and config
 $ docker run -i \
-    -v ~/run/mysqld/mysqld.sock:/tmp/mysqld.sock \
+    -v ~/run/mysqld:/tmp/mysql \
     -v ~/tmp/cfg/php:/etc/php-custom.d \
     -p 127.0.0.1:9000:9000 \
     -e TIMEZONE=Europe/Berlin \
