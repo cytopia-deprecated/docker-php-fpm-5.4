@@ -50,7 +50,7 @@ ENV PHP_LOG_XDEBUG="/var/log/php-fpm/xdebug.log"
 ###
 RUN \
 	groupadd -g ${MY_GID} -r ${MY_GROUP} && \
-	adduser -u ${MY_UID} -M -s /sbin/nologin -g ${MY_GROUP} ${MY_USER}
+	adduser -u ${MY_UID} -m -s /bin/bash -g ${MY_GROUP} ${MY_USER}
 
 RUN \
 	yum -y install epel-release && \
@@ -101,12 +101,31 @@ RUN yum -y update && yum -y install \
 	\
 	postfix \
 	\
-	socat
+	socat \
+	\
+	which \
+	git \
+	nodejs \
+	npm
+
 
 RUN \
 	yum -y autoremove && \
 	yum clean metadata && \
 	yum clean all
+
+RUN \
+	curl -sS https://getcomposer.org/installer | php && \
+	mv composer.phar /usr/local/bin/composer && \
+	\
+	git clone https://github.com/drush-ops/drush.git /usr/local/src/drush && \
+	cd /usr/local/src/drush && \
+	git checkout 8.1.9 && \
+	composer --no-interaction --no-progress install && \
+	ln -s /usr/local/src/drush/drush /usr/local/bin/drush && \
+	\
+	rm -rf /root/.composer
+
 
 
 ##
@@ -114,6 +133,7 @@ RUN \
 ##
 COPY ./scripts/docker-install.sh /
 COPY ./scripts/docker-entrypoint.sh /
+COPY ./scripts/bash-profile /etc/bash_profile
 
 
 ##

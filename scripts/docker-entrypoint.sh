@@ -538,6 +538,15 @@ fi
 run "chown -R ${MY_USER}:${MY_GROUP} ${MY_LOG_DIR}"
 run "chmod 0755 ${MY_LOG_DIR}"
 run "find ${MY_LOG_DIR} -type f -exec chmod 0644 {} \;"
+# Home dir
+run "chown -R ${MY_USER}:${MY_GROUP} /home/${MY_USER}"
+
+
+
+###
+### Nice shell prompt
+###
+run "echo \". /etc/bash_profile\" >> /etc/bashrc"
 
 
 
