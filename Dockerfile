@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-04-29"
+	build-date="2017-05-03"
 
 
 ###
@@ -94,6 +94,8 @@ RUN yum -y update && yum -y install \
 	\
 	php-pecl-apcu \
 	php-pecl-imagick \
+	php-pecl-memcache \
+	php-pecl-memcached \
 	php-pecl-uploadprogress \
 	php-pecl-xdebug \
 	\
