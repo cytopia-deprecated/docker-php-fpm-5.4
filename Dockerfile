@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-05-06"
+	build-date="2017-05-07"
 
 
 ###
@@ -103,18 +103,29 @@ RUN yum -y update && yum -y install \
 	\
 	socat \
 	\
-	which \
-	git \
-	nodejs \
-	npm
-
-
-RUN \
+	&& \
+	\
 	yum -y autoremove && \
 	yum clean metadata && \
 	yum clean all
 
-RUN \
+##
+## Install Tools
+##
+RUN yum -y update && yum -y install \
+	which \
+	git \
+	nodejs \
+	npm \
+	\
+	&& \
+	\
+	yum -y autoremove && \
+	yum clean metadata && \
+	yum clean all \
+	\
+	&& \
+	\
 	curl -sS https://getcomposer.org/installer | php && \
 	mv composer.phar /usr/local/bin/composer && \
 	\
@@ -125,7 +136,6 @@ RUN \
 	ln -s /usr/local/src/drush/drush /usr/local/bin/drush && \
 	\
 	rm -rf /root/.composer
-
 
 
 ##
