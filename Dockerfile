@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-05-07"
+	build-date="2017-05-09"
 
 
 ###
@@ -113,6 +113,7 @@ RUN yum -y update && yum -y install \
 ## Install Tools
 ##
 RUN yum -y update && yum -y install \
+	bind-utils \
 	which \
 	git \
 	nodejs \
