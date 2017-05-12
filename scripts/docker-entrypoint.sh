@@ -547,8 +547,9 @@ run "chown -R ${MY_USER}:${MY_GROUP} /var/lib/php/session"
 # Home dir
 run "chown -R ${MY_USER}:${MY_GROUP} /home/${MY_USER}"
 # Data dir
-run "chown ${MY_USER}:${MY_GROUP} /shared/httpd"
-
+if [ -d "/shared/httpd" ]; then
+	run "chown ${MY_USER}:${MY_GROUP} /shared/httpd"
+fi
 
 
 ###
