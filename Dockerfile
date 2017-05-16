@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-05-12"
+	build-date="2017-05-16"
 
 
 ###
@@ -123,19 +123,20 @@ RUN yum -y update && yum -y install \
 	\
 	yum -y autoremove && \
 	yum clean metadata && \
-	yum clean all \
-	\
-	&& \
-	\
+	yum clean all
+
+RUN \
 	curl -sS https://getcomposer.org/installer | php && \
-	mv composer.phar /usr/local/bin/composer && \
-	\
+	mv composer.phar /usr/local/bin/composer
+
+RUN \
 	git clone https://github.com/drush-ops/drush.git /usr/local/src/drush && \
 	cd /usr/local/src/drush && \
 	git checkout 8.1.9 && \
 	composer --no-interaction --no-progress install && \
-	ln -s /usr/local/src/drush/drush /usr/local/bin/drush && \
-	\
+	ln -s /usr/local/src/drush/drush /usr/local/bin/drush
+
+RUN \
 	rm -rf /root/.composer
 
 
