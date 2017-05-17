@@ -302,13 +302,34 @@ docker_stop
 
 
 ############################################################
-### [09] Test Docker Logs
+### [09] Test File Logs
 ############################################################
-print_h1 "[09]   T E S T   D OC K E R   L O G S"
+print_h1 "[09]   T E S T   F I L E   L O G S"
+
+recreate_dirs
+docker_start "-e DEBUG_COMPOSE_ENTRYPOINT=${DEBUG} -e DOCKER_LOGS_ERROR=0 -e DOCKER_LOGS_ACCESS=0 -e DOCKER_LOGS_XDEBUG=0"
+
+# TODO: grep for error here!!!
+# Produce PHP error
+docker_exec "php -r \"echo echo echo include\" || true"
+# Check logs
+docker_exec "ls -lap /var/log/php/"
+docker_exec "find /var/log/php/ -type f -exec cat {} \\;"
+# Check docker logs
+docker_logs
+docker_stop
+
+
+
+############################################################
+### [10] Test Docker Logs
+############################################################
+print_h1 "[10]   T E S T   D O C K E R   L O G S"
 
 recreate_dirs
 docker_start "-e DEBUG_COMPOSE_ENTRYPOINT=${DEBUG} -e DOCKER_LOGS_ERROR=1 -e DOCKER_LOGS_ACCESS=1 -e DOCKER_LOGS_XDEBUG=1"
 
+# TODO: attach httpd server and send request!!!
 # Produce PHP error
 docker_exec "php -r \"echo echo echo include\" || true"
 # Check logs
