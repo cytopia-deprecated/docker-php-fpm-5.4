@@ -130,6 +130,9 @@ docker_exec_false() {
 docker_stop() {
 	run "docker stop $( docker_id )"
 }
+docker_logs() {
+	run "docker logs $( docker_id )"
+}
 docker_id() {
 	docker ps | grep "${MY_DOCKER_NAME}" | awk '{print $1}'
 }
@@ -294,4 +297,19 @@ run "ls -lap ${MY_MAIL_DIR}/"
 run "cat ${MY_MAIL_DIR}/devilbox"
 # Test for mail
 run "grep 'test-mail' ${MY_MAIL_DIR}/devilbox"
+docker_stop
+
+
+
+############################################################
+### [09] Test Docker Logs
+############################################################
+print_h1 "[09]   T E S T   D OC K E R   L O G S"
+
+recreate_dirs
+docker_start "-e DEBUG_COMPOSE_ENTRYPOINT=${DEBUG} -e DOCKER_LOGS_ERROR=1 -e DOCKER_LOGS_ACCESS=1 -e DOCKER_LOGS_XDEBUG=1"
+
+# Make php error command
+docker_exec "php -r \"echo echo echo include\" || true"
+docker_logs
 docker_stop
