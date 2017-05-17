@@ -139,6 +139,27 @@ $ docker run -i \
     -t cytopia/php-fpm-5.4
 ```
 
+**7. Run with webserver that supports PHP-FPM**
+
+```shell
+# Start myself
+$ docker run -d \
+    -p 9000 \
+    -v ~/my-host-www:/var/www/html \
+    --name php \
+    -t cytopia/php-fpm-5.4
+
+# Start webserver and link into myself
+$ docker run -i \
+    -p 80:80 \
+    -v ~/my-host-www:/var/www/html \
+    -e PHP_FPM_ENABLE=1 \
+    -e PHP_FPM_SERVER_ADDR=php \
+    -e PHP_FPM_SERVER_PORT=9000 \
+    --link php \
+    -t cytopia/nginx-mainline
+```
+
 ## Modules
 
 **[Version]**
