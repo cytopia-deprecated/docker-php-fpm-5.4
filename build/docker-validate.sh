@@ -29,7 +29,10 @@ MY_CONF_DIR="$( mktemp -d )"
 MY_SOCK_DIR="$( mktemp -d )"
 MY_MAIL_DIR="$( mktemp -d )"
 MY_HTML_DIR="$( mktemp -d )"
-
+chmod 0777 "${MY_CONF_DIR}"
+chmod 0777 "${MY_SOCK_DIR}"
+chmod 0777 "${MY_MAIL_DIR}"
+chmod 0777 "${MY_HTML_DIR}"
 
 ################################################################################
 ###
@@ -110,6 +113,11 @@ recreate_dirs() {
 	MY_SOCK_DIR="$( mktemp -d )"
 	MY_MAIL_DIR="$( mktemp -d )"
 	MY_HTML_DIR="$( mktemp -d )"
+
+	chmod 0777 "${MY_CONF_DIR}"
+	chmod 0777 "${MY_SOCK_DIR}"
+	chmod 0777 "${MY_MAIL_DIR}"
+	chmod 0777 "${MY_HTML_DIR}"
 }
 
 docker_start() {
@@ -327,14 +335,14 @@ print_h1 "[09]   T E S T   F I L E   L O G S"
 
 recreate_dirs
 docker_start "-p 9000 -v ${MY_HTML_DIR}:/var/www/html -e DEBUG_COMPOSE_ENTRYPOINT=${DEBUG} -e DOCKER_LOGS_ERROR=0 -e DOCKER_LOGS_ACCESS=0 -e DOCKER_LOGS_XDEBUG=0"
-docker_start_httpd "-p 80:80 -v ${MY_HTML_DIR}:/var/www/html -e PHP_FPM_ENABLE=1 -e PHP_FPM_SERVER_ADDR=php -e PHP_FPM_SERVER_PORT=9000 --link ${MY_DOCKER_NAME}"
+docker_start_httpd "-p 80:80 -v ${MY_HTML_DIR}:/var/www/html -e PHP_FPM_ENABLE=1 -e PHP_FPM_SERVER_ADDR=${MY_DOCKER_NAME} -e PHP_FPM_SERVER_PORT=9000 --link ${MY_DOCKER_NAME} -e DEBUG_COMPOSE_ENTRYPOINT=${DEBUG}"
 
 # Produce PHP error
 echo "<?php echo echo include" > "${MY_HTML_DIR}/index.php"
 run "curl localhost | grep 'syntax error'"
 # Check logs (something must be in there)
 docker_exec "ls -lap /var/log/php/"
-docker_exec "find /var/log/php/ -type f -exec cat {} \\; | grep 'syntax error"
+docker_exec "find /var/log/php/ -type f -exec cat {} \\; | grep 'syntax error'"
 # Check docker logs
 docker_logs
 
@@ -350,7 +358,7 @@ print_h1 "[10]   T E S T   D O C K E R   L O G S"
 
 recreate_dirs
 docker_start "-p 9000 -v ${MY_HTML_DIR}:/var/www/html -e DEBUG_COMPOSE_ENTRYPOINT=${DEBUG} -e DOCKER_LOGS_ERROR=1 -e DOCKER_LOGS_ACCESS=1 -e DOCKER_LOGS_XDEBUG=1"
-docker_start_httpd "-p 80:80 -v ${MY_HTML_DIR}:/var/www/html -e PHP_FPM_ENABLE=1 -e PHP_FPM_SERVER_ADDR=php -e PHP_FPM_SERVER_PORT=9000 --link ${MY_DOCKER_NAME}"
+docker_start_httpd "-p 80:80 -v ${MY_HTML_DIR}:/var/www/html -e PHP_FPM_ENABLE=1 -e PHP_FPM_SERVER_ADDR=${MY_DOCKER_NAME} -e PHP_FPM_SERVER_PORT=9000 --link ${MY_DOCKER_NAME} -e DEBUG_COMPOSE_ENTRYPOINT=${DEBUG}"
 
 # Produce PHP error
 echo "<?php echo echo include" > "${MY_HTML_DIR}/index.php"
