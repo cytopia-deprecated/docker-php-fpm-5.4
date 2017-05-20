@@ -535,7 +535,6 @@ fi
 ### Fix uid/gid permissions of mounted volumes
 ###
 # Log dir
-# TODO: Does this work with docker logs enabled?
 run "chown -R ${MY_USER}:${MY_GROUP} ${MY_LOG_DIR}"
 run "chmod 0755 ${MY_LOG_DIR}"
 run "find ${MY_LOG_DIR} -type f -exec chmod 0644 {} \;"

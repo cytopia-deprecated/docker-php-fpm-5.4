@@ -130,9 +130,6 @@ RUN \
 	su - ${MY_USER} -c 'cd /usr/local/src/drush && composer install --no-interaction --no-progress' && \
 	ln -s /usr/local/src/drush/drush /usr/local/bin/drush
 
-RUN \
-	rm -rf /root/.composer
-
 
 ###
 ### Bootstrap Scipts
