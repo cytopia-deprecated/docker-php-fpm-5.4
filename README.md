@@ -1,6 +1,6 @@
 # PHP-FPM 5.4 Docker
 
-<small>**Latest build:** 2017-05-21</small>
+<small>**Latest build:** 2017-05-22</small>
 
 [![Build Status](https://travis-ci.org/cytopia/docker-php-fpm-5.4.svg?branch=master)](https://travis-ci.org/cytopia/docker-php-fpm-5.4) [![](https://images.microbadger.com/badges/version/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/image/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/license/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4")
 
@@ -173,7 +173,7 @@ Zend Engine v2.4.0, Copyright (c) 1998-2014 Zend Technologies
 
 **[PHP Modules]**
 
-apc, apcu, bcmath, bz2, calendar, Core, ctype, curl, date, dom, ereg, exif, fileinfo, filter, ftp, gd, gettext, gmp, hash, iconv, igbinary, imagick, imap, intl, json, ldap, libxml, magickwand, mbstring, mcrypt, memcache, memcached, mhash, msgpack, mysql, mysqli, mysqlnd, openssl, pcntl, pcre, PDO, pdo_mysql, pdo_pgsql, pdo_sqlite, pgsql, phalcon, Phar, posix, pspell, readline, recode, redis, Reflection, session, shmop, SimpleXML, soap, sockets, SPL, sqlite3, standard, sysvmsg, sysvsem, sysvshm, tidy, tokenizer, uploadprogress, wddx, xdebug, xml, xmlreader, xmlrpc, xmlwriter, xsl, Zend OPcache, zip, zlib
+apc, apcu, bcmath, bz2, calendar, Core, ctype, curl, date, dom, ereg, exif, fileinfo, filter, ftp, gd, gettext, gmp, hash, iconv, igbinary, imagick, imap, intl, json, ldap, libxml, magickwand, mbstring, mcrypt, memcache, memcached, mhash, mongodb, msgpack, mysql, mysqli, mysqlnd, openssl, pcntl, pcre, PDO, pdo_mysql, pdo_pgsql, pdo_sqlite, pgsql, phalcon, Phar, posix, pspell, readline, recode, redis, Reflection, session, shmop, SimpleXML, soap, sockets, SPL, sqlite3, standard, sysvmsg, sysvsem, sysvshm, tidy, tokenizer, uploadprogress, wddx, xdebug, xml, xmlreader, xmlrpc, xmlwriter, xsl, Zend OPcache, zip, zlib
 
 **[Zend Modules]**
 
