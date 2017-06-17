@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-06-07"
+	build-date="2017-06-17"
 
 
 ###
@@ -107,6 +107,7 @@ RUN yum -y update && yum -y install \
 ### Install Tools
 ###
 RUN yum -y update && yum -y install \
+	mysql \
 	bind-utils \
 	which \
 	git \
@@ -121,15 +122,51 @@ RUN yum -y update && yum -y install \
 
 RUN \
 	curl -sS https://getcomposer.org/installer | php && \
-	mv composer.phar /usr/local/bin/composer
+	mv composer.phar /usr/local/bin/composer && \
+	composer self-update
+
+RUN \
+	DRUSH_VERSION="8.1.12" && \
+	mkdir -p /usr/local/src && \
+	chown ${MY_USER}:${MY_GROUP} /usr/local/src && \
+	su - ${MY_USER} -c 'git clone https://github.com/drush-ops/drush.git /usr/local/src/drush' && \
+	v="${DRUSH_VERSION}" su ${MY_USER} -p -c 'cd /usr/local/src/drush && git checkout ${v}' && \
+	su - ${MY_USER} -c 'cd /usr/local/src/drush && composer install --no-interaction --no-progress' && \
+	ln -s /usr/local/src/drush/drush /usr/local/bin/drush
+
+RUN \
+	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+	mv wp-cli.phar /usr/local/bin/wp && \
+	chmod +x /usr/local/bin/wp && \
+	wp cli update
 
 RUN \
 	mkdir -p /usr/local/src && \
 	chown ${MY_USER}:${MY_GROUP} /usr/local/src && \
-	su - ${MY_USER} -c 'git clone https://github.com/drush-ops/drush.git /usr/local/src/drush' && \
-	su - ${MY_USER} -c 'cd /usr/local/src/drush && git checkout 8.1.9' && \
-	su - ${MY_USER} -c 'cd /usr/local/src/drush && composer install --no-interaction --no-progress' && \
-	ln -s /usr/local/src/drush/drush /usr/local/bin/drush
+	su - ${MY_USER} -c 'git clone https://github.com/cytopia/mysqldump-secure.git /usr/local/src/mysqldump-secure' && \
+	su - ${MY_USER} -c 'cd /usr/local/src/mysqldump-secure && git checkout $(git describe --abbrev=0 --tags)' && \
+	ln -s /usr/local/src/mysqldump-secure/bin/mysqldump-secure /usr/local/bin && \
+	cp /usr/local/src/mysqldump-secure/etc/mysqldump-secure.conf /etc && \
+	cp /usr/local/src/mysqldump-secure/etc/mysqldump-secure.cnf /etc && \
+	touch /var/log/mysqldump-secure.log && \
+	chown ${MY_USER}:${MY_GROUP} /etc/mysqldump-secure.* && \
+	chown ${MY_USER}:${MY_GROUP} /var/log/mysqldump-secure.log && \
+	chmod 0400 /etc/mysqldump-secure.conf && \
+	chmod 0400 /etc/mysqldump-secure.cnf && \
+	chmod 0644 /var/log/mysqldump-secure.log && \
+	sed -i'' 's/^DUMP_DIR=.*/DUMP_DIR="\/shared\/backups\/mysql"/g' /etc/mysqldump-secure.conf && \
+	sed -i'' 's/^DUMP_DIR_CHMOD=.*/DUMP_DIR_CHMOD="0755"/g' /etc/mysqldump-secure.conf && \
+	sed -i'' 's/^DUMP_FILE_CHMOD=.*/DUMP_FILE_CHMOD="0644"/g' /etc/mysqldump-secure.conf && \
+	sed -i'' 's/^LOG_CHMOD=.*/LOG_CHMOD="0644"/g' /etc/mysqldump-secure.conf && \
+	sed -i'' 's/^NAGIOS_LOG=.*/NAGIOS_LOG=0/g' /etc/mysqldump-secure.conf
+
+
+###
+### Configure PS1
+###
+RUN \
+	echo ". /etc/bash_profile" >> /home/${MY_USER}/.bashrc && \
+	echo ". /etc/bash_profile" >> /root/.bashrc
 
 
 ###
