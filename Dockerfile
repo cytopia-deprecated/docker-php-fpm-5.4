@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-06-20"
+	build-date="2017-06-27"
 
 
 ###
@@ -106,6 +106,8 @@ RUN yum -y update && yum -y install \
 	postfix \
 	\
 	socat \
+	\
+	nc \
 	\
 	&& \
 	\
