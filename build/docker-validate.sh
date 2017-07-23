@@ -142,8 +142,8 @@ docker_exec_false() {
 	run_if "docker exec ${MY_DOCKER_NAME} ${_args}" "false" "true"
 }
 docker_stop() {
-	run "docker stop $( docker_id ) || true"
-	run "docker kill $( docker_id ) || true"
+	run "docker stop $( docker_id ) >/dev/null 2>&1 || true"
+	run "docker kill $( docker_id ) >/dev/null 2>&1 || true"
 }
 docker_logs() {
 	run "docker logs $( docker_id )"
@@ -164,8 +164,8 @@ docker_start_mysql() {
 	fi
 }
 docker_stop_mysql() {
-	run "docker stop $( docker ps | grep 'mysql' | awk '{print $1}' ) || true"
-	run "docker kill $( docker ps | grep 'mysql' | awk '{print $1}' ) || true"
+	run "docker stop $( docker ps | grep 'mysql' | awk '{print $1}' ) >/dev/null 2>&1 || true"
+	run "docker kill $( docker ps | grep 'mysql' | awk '{print $1}' ) >/dev/null 2>&1 || true"
 }
 docker_start_httpd() {
 	_args="${1}"
@@ -180,8 +180,8 @@ docker_start_httpd() {
 	fi
 }
 docker_stop_httpd() {
-	run "docker stop $( docker ps | grep 'httpd' | awk '{print $1}' ) || true"
-	run "docker kill $( docker ps | grep 'httpd' | awk '{print $1}' ) || true"
+	run "docker stop $( docker ps | grep 'httpd' | awk '{print $1}' ) >/dev/null 2>&1 || true"
+	run "docker kill $( docker ps | grep 'httpd' | awk '{print $1}' ) >/dev/null 2>&1 || true"
 }
 
 
