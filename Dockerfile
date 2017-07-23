@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-06-27"
+	build-date="2017-07-23"
 
 
 ###

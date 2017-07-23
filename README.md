@@ -1,6 +1,6 @@
 # PHP-FPM 5.4 Docker
 
-<small>**Latest build:** 2017-06-27</small>
+<small>**Latest build:** 2017-07-23</small>
 
 [![Build Status](https://travis-ci.org/cytopia/docker-php-fpm-5.4.svg?branch=master)](https://travis-ci.org/cytopia/docker-php-fpm-5.4) [![](https://images.microbadger.com/badges/version/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/image/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/license/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4")
 
@@ -173,6 +173,7 @@ PHP 5.4.45 (cli) (built: Feb 18 2017 15:44:23)
 Copyright (c) 1997-2014 The PHP Group
 Zend Engine v2.4.0, Copyright (c) 1998-2014 Zend Technologies
     with Zend OPcache v7.0.5, Copyright (c) 1999-2015, by Zend Technologies
+    with Xdebug v2.4.1, Copyright (c) 2002-2016, by Derick Rethans
 
 **[PHP Modules]**
 
@@ -190,7 +191,7 @@ Xdebug, Zend OPcache
 | [drupal-console](https://drupalconsole.com) | unavailable |
 | [drush](http://www.drush.org)          | 8.1.12 |
 | [git](https://git-scm.com)             | 1.8.3.1 |
-| [laravel installer](https://github.com/laravel/installer)     | 1.3.6 |
+| [laravel installer](https://github.com/laravel/installer)     | 1.3.7 |
 | [mysqldump-secure](https://mysqldump-secure.org) | 0.16.3 |
 | [node](https://nodejs.org)             | 6.10.3 |
 | [npm](https://www.npmjs.com)           | 3.10.10 |
