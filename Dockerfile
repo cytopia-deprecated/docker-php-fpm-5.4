@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-08-10"
+	build-date="2017-08-13"
 
 
 ###
@@ -46,8 +46,12 @@ RUN \
 	adduser -u ${MY_UID} -m -s /bin/bash -g ${MY_GROUP} ${MY_USER}
 
 RUN \
+	yum -y update && \
+	yum -y install deltarpm && \
 	yum -y install epel-release && \
+	rpm --import http://rpms.famillecollet.com/RPM-GPG-KEY-remi && \
 	rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
+	yum-config-manager --enable epel && \
 	yum-config-manager --enable remi && \
 	yum-config-manager --disable remi-php55 && \
 	yum-config-manager --disable remi-php56 && \
@@ -63,7 +67,8 @@ RUN \
 		echo "enabled=1"; \
 		echo "gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc"; \
 	) > /etc/yum.repos.d/mongodb.repo && \
-	yum clean all
+	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts && \
+	yum repolist
 
 RUN yum -y update && yum -y install \
 	php \
@@ -113,7 +118,8 @@ RUN yum -y update && yum -y install \
 	\
 	yum -y autoremove && \
 	yum clean metadata && \
-	yum clean all
+	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts
+
 
 ###
 ### Install Tools
@@ -132,7 +138,7 @@ RUN yum -y update && yum -y install \
 	\
 	yum -y autoremove && \
 	yum clean metadata && \
-	yum clean all
+	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts
 
 RUN \
 	curl -sS https://getcomposer.org/installer | php && \
@@ -196,6 +202,32 @@ RUN \
 	ln -s /usr/local/src/phalcon-devtools/phalcon.php /usr/local/bin/phalcon && \
 	chmod +x /usr/local/bin/phalcon
 
+# Awesome-CI
+RUN \
+	mkdir -p /usr/local/src && \
+	chown ${MY_USER}:${MY_GROUP} /usr/local/src && \
+	su - ${MY_USER} -c 'git clone https://github.com/cytopia/awesome-ci.git /usr/local/src/awesome-ci' && \
+	su - ${MY_USER} -c 'cd /usr/local/src/awesome-ci && git checkout $(git describe --abbrev=0 --tags)' && \
+	su - ${MY_USER} -c 'cd /usr/local/src/awesome-ci && ./configure --prefix=/usr/local' && \
+	cd /usr/local/src/awesome-ci && make install
+# Awesome-CI requirements
+RUN yum -y update && yum -y install \
+	file \
+	dos2unix \
+	moreutils \
+	rubygems && \
+	\
+	yum -y autoremove && \
+	yum clean metadata && \
+	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts && \
+	\
+	gem install scss_lint && \
+	gem install mdl && \
+	npm install -g eslint && \
+	npm install -g jsonlint && \
+	npm install -g mdlint
+
+
 ###
 ### Configure PS1
 ###
@@ -211,6 +243,41 @@ RUN \
 		echo "fi"; \
 	) | tee /home/${MY_USER}/.bash_profile /root/.bash_profile && \
 	echo ". /etc/bash_profile" | tee -a /etc/bashrc
+
+
+###
+### Generate locals
+###
+RUN \
+	localedef -i de_CH -f UTF-8 de_CH.UTF-8 && \
+	localedef -i de_DE -f UTF-8 de_DE.UTF-8 && \
+	localedef -i de_LU -f UTF-8 de_LU.UTF-8 && \
+	\
+	localedef -i en_AG -f UTF-8 en_AG.UTF-8 && \
+	localedef -i en_AU -f UTF-8 en_AU.UTF-8 && \
+	localedef -i en_BW -f UTF-8 en_BW.UTF-8 && \
+	localedef -i en_CA -f UTF-8 en_CA.UTF-8 && \
+	localedef -i en_DK -f UTF-8 en_DK.UTF-8 && \
+	localedef -i en_GB -f UTF-8 en_GB.UTF-8 && \
+	localedef -i en_HK -f UTF-8 en_HK.UTF-8 && \
+	localedef -i en_IE -f UTF-8 en_IE.UTF-8 && \
+	localedef -i en_IN -f UTF-8 en_IN.UTF-8 && \
+	localedef -i en_NG -f UTF-8 en_NG.UTF-8 && \
+	localedef -i en_NZ -f UTF-8 en_NZ.UTF-8 && \
+	localedef -i en_PH -f UTF-8 en_PH.UTF-8 && \
+	localedef -i en_SG -f UTF-8 en_SG.UTF-8 && \
+	localedef -i en_US -f UTF-8 en_US.UTF-8 && \
+	localedef -i en_ZA -f UTF-8 en_ZA.UTF-8 && \
+	localedef -i en_ZM -f UTF-8 en_ZM.UTF-8 && \
+	localedef -i en_ZW -f UTF-8 en_ZW.UTF-8 && \
+	\
+	localedef -i ru_RU -f UTF-8 ru_RU.UTF-8 && \
+	localedef -i ru_UA -f UTF-8 ru_UA.UTF-8 && \
+	\
+	localedef -i zh_CN -f UTF-8 zh_CN.UTF-8 && \
+	localedef -i zh_HK -f UTF-8 zh_HK.UTF-8 && \
+	localedef -i zh_SG -f UTF-8 zh_SG.UTF-8 && \
+	localedef -i zh_TW -f UTF-8 zh_TW.UTF-8
 
 
 ###

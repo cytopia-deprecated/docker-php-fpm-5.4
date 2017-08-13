@@ -1,12 +1,16 @@
+# Locale
+export LC_ALL=en_US.UTF-8
+
+# Aliases
 alias ls='ls -p --color=always --group-directories-first'
 alias l='ls -lp --color=always --group-directories-first'
 alias ll='ls -alp --color=always --group-directories-first'
-
+alias ..='cd ..'
 
 # Nice PS1
 PS1="\[\e[0;31m\]$(whoami)\[\e[0m\]@\[\e[0;36m\]php-$(php -v|head -1|grep -Eo '[0-9.]+'|head -1)\[\e[0m\] in \[\e[0;34m\]\w \[\e[0m\]\$ "
 
-
+# Show Intro
 echo
 echo "--------------------------------------------------------------------------------"
 echo "                         _            _ _ _               "
@@ -21,6 +25,7 @@ echo
 echo
 echo "              | Available Tools  | Project website              |"
 echo "              |------------------|------------------------------|"
+echo "              | awesome-ci       | gh: cytopia/awesome-ci       |"
 echo "              | composer         | https://getcomposer.org      |"
 echo "              | drush            | http://www.drush.org         |"
 echo "              | git              | https://git-scm.com          |"
