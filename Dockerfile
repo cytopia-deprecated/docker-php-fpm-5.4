@@ -67,78 +67,140 @@ RUN \
 		echo "enabled=1"; \
 		echo "gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc"; \
 	) > /etc/yum.repos.d/mongodb.repo && \
-	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts && \
-	yum repolist
+	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts
 
-RUN yum -y update && yum -y install \
-	php \
-	php-cli \
-	php-fpm \
-	\
-	php-bcmath \
-	php-common \
-	php-gd \
-	php-gmp \
-	php-imap \
-	php-intl \
-	php-ldap \
-	php-magickwand \
-	php-mbstring \
-	php-mcrypt \
-	php-mysqli \
-	php-mysqlnd \
-	php-opcache \
-	php-pdo \
-	php-pear \
-	php-pgsql \
-	php-phalcon2 \
-	php-pspell \
-	php-recode \
-	php-redis \
-	php-soap \
-	php-tidy \
-	php-xml \
-	php-xmlrpc \
-	\
-	php-pecl-apcu \
-	php-pecl-imagick \
-	php-pecl-memcache \
-	php-pecl-memcached \
-	php-pecl-mongodb \
-	php-pecl-uploadprogress \
-	php-pecl-xdebug \
-	\
-	postfix \
-	\
-	socat \
-	\
-	nc \
+RUN yum -y update && \
+	max=100; i=0; while [ $i -lt $max ]; do \
+		if yum -y install \
+		php \
+		php-cli \
+		php-fpm \
+		\
+		php-bcmath \
+		php-common \
+		php-gd \
+		php-gmp \
+		php-imap \
+		php-intl \
+		php-ldap \
+		php-magickwand \
+		php-mbstring \
+		php-mcrypt \
+		php-mysqli \
+		php-mysqlnd \
+		php-opcache \
+		php-pdo \
+		php-pear \
+		php-pgsql \
+		php-phalcon2 \
+		php-pspell \
+		php-recode \
+		php-redis \
+		php-soap \
+		php-tidy \
+		php-xml \
+		php-xmlrpc \
+		\
+		php-pecl-apcu \
+		php-pecl-imagick \
+		php-pecl-memcache \
+		php-pecl-memcached \
+		php-pecl-mongodb \
+		php-pecl-uploadprogress \
+		php-pecl-xdebug \
+		\
+		postfix \
+		\
+		socat \
+		\
+		; then \
+			break; \
+		else \
+			i=$((i+1)) && \
+			yum clean metadata && \
+			yum clean all && \
+			(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
+			(rm /var/cache/yum/x86_64/7/timedhosts.txt 2>/dev/null || true) && \
+			yum -y update; \
+		fi \
+	done \
 	\
 	&& \
 	\
 	yum -y autoremove && \
 	yum clean metadata && \
-	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts
+	yum clean all && \
+	(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
+	(rm /var/cache/yum/x86_64/7/timedhosts.txt 2>/dev/null || true)
 
 
 ###
 ### Install Tools
 ###
-RUN yum -y update && yum -y install \
-	mysql \
-	postgresql96 \
-	mongodb-org-tools \
-	bind-utils \
-	which \
-	git \
-	nodejs \
-	npm \
+RUN yum -y update && \
+	max=100; i=0; while [ $i -lt $max ]; do \
+		if yum -y install \
+		ack \
+		aspell \
+		autoconf \
+		automake \
+		bash-completion \
+		bash-completion-extras \
+		bind-utils \
+		bzip2 \
+		coreutils \
+		devscripts-minimal \
+		dos2unix \
+		file \
+		git \
+		git-svn \
+		hostname \
+		htop \
+		ImageMagick \
+		iputils \
+		mongodb-org-tools \
+		moreutils \
+		mysql \
+		neovim \
+		nmap-ncat \
+		nodejs \
+		nodejs-grunt-cli \
+		npm \
+		php-pear-PHP-CodeSniffer \
+		postgresql96 \
+		python2-pip \
+		rubygems \
+		sassc \
+		ShellCheck \
+		subversion \
+		sudo \
+		the_silver_searcher \
+		tig \
+		vi \
+		vim \
+		w3m \
+		wget \
+		which \
+		whois \
+		; then \
+			break; \
+		else \
+			i=$((i+1)) && \
+			yum clean metadata && \
+			yum clean all && \
+			(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
+			(rm /var/cache/yum/x86_64/7/timedhosts.txt 2>/dev/null || true) && \
+			yum -y update; \
+		fi \
+	done \
 	\
 	&& \
 	\
 	yum -y autoremove && \
 	yum clean metadata && \
-	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts
+	yum clean all && \
+	(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
+	(rm /var/cache/yum/x86_64/7/timedhosts.txt 2>/dev/null || true)
 
 RUN \
 	curl -sS https://getcomposer.org/installer | php && \
@@ -211,21 +273,13 @@ RUN \
 	su - ${MY_USER} -c 'cd /usr/local/src/awesome-ci && ./configure --prefix=/usr/local' && \
 	cd /usr/local/src/awesome-ci && make install
 # Awesome-CI requirements
-RUN yum -y update && yum -y install \
-	file \
-	dos2unix \
-	moreutils \
-	rubygems && \
-	\
-	yum -y autoremove && \
-	yum clean metadata && \
-	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts && \
-	\
-	gem install scss_lint && \
+RUN \
 	gem install mdl && \
+	gem install scss_lint && \
 	npm install -g eslint && \
 	npm install -g jsonlint && \
-	npm install -g mdlint
+	npm install -g mdlint && \
+	npm install -g gulp
 
 
 ###
@@ -286,6 +340,7 @@ RUN \
 COPY ./scripts/docker-install.sh /
 COPY ./scripts/docker-entrypoint.sh /
 COPY ./scripts/bash-profile /etc/bash_profile
+COPY ./scripts/sudo-devilbox /etc/sudoers.d/devilbox
 
 
 ###
