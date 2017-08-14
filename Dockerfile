@@ -49,6 +49,7 @@ RUN \
 	yum -y update && \
 	yum -y install deltarpm && \
 	yum -y install epel-release && \
+	sed -i'' 's/^#baseurl/baseurl/g' /etc/yum.repos.d/epel.repo && \
 	rpm --import http://rpms.famillecollet.com/RPM-GPG-KEY-remi && \
 	rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
 	yum-config-manager --enable epel && \
