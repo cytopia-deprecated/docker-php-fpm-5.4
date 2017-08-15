@@ -165,9 +165,6 @@ RUN yum -y update && \
 		mysql \
 		neovim \
 		nmap-ncat \
-		nodejs \
-		nodejs-grunt-cli \
-		npm \
 		php-pear-PHP-CodeSniffer \
 		postgresql96 \
 		python2-pip \
@@ -202,6 +199,16 @@ RUN yum -y update && \
 	yum clean all && \
 	(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
 	(rm /var/cache/yum/x86_64/7/timedhosts.txt 2>/dev/null || true)
+
+RUN \
+	mkdir -p /usr/local/src && \
+	chown ${MY_USER}:${MY_GROUP} /usr/local/src && \
+	VERSION="$( curl -Lq https://nodejs.org 2>/dev/null | grep LTS | grep -Eo 'data-version.*.' | grep -oE 'v[0-9.]+' )" && \
+	wget -P /usr/local/src https://nodejs.org/dist/${VERSION}/node-${VERSION}-linux-x64.tar.xz && \
+	tar xvf /usr/local/src/node-${VERSION}-linux-x64.tar.xz -C /usr/local/src && \
+	ln -s /usr/local/src/node-${VERSION}-linux-x64 /usr/local/node && \
+	ln -s /usr/local/node/bin/* /usr/local/bin/ && \
+	rm -f /usr/local/src/node-${VERSION}-linux-x64.tar.xz
 
 RUN \
 	curl -sS https://getcomposer.org/installer | php && \
