@@ -196,16 +196,8 @@ docker_stop_httpd() {
 ############################################################
 print_h1 "[01]   B U I L D I N G"
 
-max=100; i=0;
-while [ $i -lt $max ]; do
-	docker_stop >/dev/null 2>&1 || true
-	if run "docker build --no-cache -t cytopia/${MY_DOCKER_NAME} ${CWD}/"; then
-		break;
-	else
-		i=$((i+1))
-	fi
-done
-
+docker_stop >/dev/null 2>&1 || true
+run "docker build --no-cache -t cytopia/${MY_DOCKER_NAME} ${CWD}/"
 
 
 

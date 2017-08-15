@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-08-13"
+	build-date="2017-08-14"
 
 
 ###
@@ -49,9 +49,9 @@ RUN \
 	yum -y update && \
 	yum -y install deltarpm && \
 	yum -y install epel-release && \
-	sed -i'' 's/^#baseurl/baseurl/g' /etc/yum.repos.d/epel.repo && \
 	rpm --import http://rpms.famillecollet.com/RPM-GPG-KEY-remi && \
 	rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm && \
+	yum-config-manager --enable extras && \
 	yum-config-manager --enable epel && \
 	yum-config-manager --enable remi && \
 	yum-config-manager --disable remi-php55 && \
@@ -68,10 +68,12 @@ RUN \
 		echo "enabled=1"; \
 		echo "gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc"; \
 	) > /etc/yum.repos.d/mongodb.repo && \
-	yum clean all && rm /var/cache/yum/x86_64/7/timedhosts
+	yum clean all && \
+	(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
+	(rm /var/cache/yum/x86_64/7/timedhosts.txt 2>/dev/null || true)
 
 RUN yum -y update && \
-	max=100; i=0; while [ $i -lt $max ]; do \
+	while true; do \
 		if yum -y install \
 		php \
 		php-cli \
@@ -117,7 +119,6 @@ RUN yum -y update && \
 		; then \
 			break; \
 		else \
-			i=$((i+1)) && \
 			yum clean metadata && \
 			yum clean all && \
 			(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
@@ -139,7 +140,7 @@ RUN yum -y update && \
 ### Install Tools
 ###
 RUN yum -y update && \
-	max=100; i=0; while [ $i -lt $max ]; do \
+	while true; do \
 		if yum -y install \
 		ack \
 		aspell \
@@ -186,7 +187,6 @@ RUN yum -y update && \
 		; then \
 			break; \
 		else \
-			i=$((i+1)) && \
 			yum clean metadata && \
 			yum clean all && \
 			(rm /var/cache/yum/x86_64/7/timedhosts 2>/dev/null || true) && \
