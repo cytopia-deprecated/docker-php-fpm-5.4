@@ -1,6 +1,6 @@
 # PHP-FPM 5.4 Docker
 
-<small>**Latest build:** 2017-08-10</small>
+<small>**Latest build:** 2017-08-14</small>
 
 [![Build Status](https://travis-ci.org/cytopia/docker-php-fpm-5.4.svg?branch=master)](https://travis-ci.org/cytopia/docker-php-fpm-5.4) [![](https://images.microbadger.com/badges/version/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/image/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/license/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4")
 
@@ -187,6 +187,7 @@ Xdebug, Zend OPcache
 
 | tool           | version |
 |----------------|---------|
+| [awesome-ci](https://github.com/cytopia/awesome-ci)  | 0.9 |
 | [composer](https://getcomposer.org)    | 1.5.1 |
 | [drupal-console](https://drupalconsole.com) | unavailable |
 | [drush](http://www.drush.org)          | 8.1.12 |
