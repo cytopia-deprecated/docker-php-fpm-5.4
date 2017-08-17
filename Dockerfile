@@ -13,7 +13,7 @@ LABEL \
 	image="php-fpm-5.4" \
 	vendor="cytopia" \
 	license="MIT" \
-	build-date="2017-08-14"
+	build-date="2017-08-17"
 
 
 ###
@@ -287,7 +287,8 @@ RUN \
 	npm install -g eslint && \
 	npm install -g jsonlint && \
 	npm install -g mdlint && \
-	npm install -g gulp
+	npm install -g gulp && \
+	ln -sf /usr/local/node/bin/* /usr/local/bin/
 
 
 ###
@@ -298,11 +299,21 @@ RUN \
 		echo "if [ -f /etc/bashrc ]; then"; \
 		echo "    . /etc/bashrc"; \
 		echo "fi"; \
+		echo "if [ -d /etc/bashrc-devilbox.d/ ]; then"; \
+		echo "    for f in /etc/bashrc-devilbox.d/*.sh ; do"; \
+		echo "        .\${f}"; \
+		echo "    done"; \
+		echo "fi";\
 	) | tee /home/${MY_USER}/.bashrc /root/.bashrc && \
 	( \
 		echo "if [ -f ~/.bashrc ]; then"; \
 		echo "    . ~/.bashrc"; \
 		echo "fi"; \
+		echo "if [ -d /etc/bashrc-devilbox.d/ ]; then"; \
+		echo "    for f in /etc/bashrc-devilbox.d/*.sh ; do"; \
+		echo "        .\${f}"; \
+		echo "    done"; \
+		echo "fi";\
 	) | tee /home/${MY_USER}/.bash_profile /root/.bash_profile && \
 	echo ". /etc/bash_profile" | tee -a /etc/bashrc
 
