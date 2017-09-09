@@ -1,6 +1,6 @@
 # PHP-FPM 5.4 Docker
 
-<small>**Latest build:** 2017-08-27</small>
+<small>**Latest build:** 2017-09-09</small>
 
 [![Build Status](https://travis-ci.org/cytopia/docker-php-fpm-5.4.svg?branch=master)](https://travis-ci.org/cytopia/docker-php-fpm-5.4) [![](https://images.microbadger.com/badges/version/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/image/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4") [![](https://images.microbadger.com/badges/license/cytopia/php-fpm-5.4.svg)](https://microbadger.com/images/cytopia/php-fpm-5.4 "php-fpm-5.4")
 
@@ -194,11 +194,11 @@ Xdebug, Zend OPcache
 | [git](https://git-scm.com)             | 1.8.3.1 |
 | [laravel installer](https://github.com/laravel/installer)     | 1.3.7 |
 | [mysqldump-secure](https://mysqldump-secure.org) | 0.16.3 |
-| [node](https://nodejs.org)             | 6.11.2 |
+| [node](https://nodejs.org)             | 6.11.3 |
 | [npm](https://www.npmjs.com)           | 3.10.10 |
 | [phalcon-devtools](https://github.com/phalcon/phalcon-devtools)   | 2.0.13 |
 | [symfony installer](https://github.com/symfony/symfony-installer) | 1.5.9 |
-| [Webpack](https://github.com/webpack/webpack)                     | 3.5.5 |
+| [Webpack](https://github.com/webpack/webpack)                     | 3.5.6 |
 | [wp-cli](https://wp-cli.org)           | 1.3.0 |
 
 **[Misc Tools]**

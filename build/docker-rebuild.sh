@@ -69,10 +69,10 @@ BIN_LARA="$(    docker exec my_tmp_${NAME} laravel          --version 2>/dev/nul
 BIN_NODE="$(    docker exec my_tmp_${NAME} node             --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
 BIN_NPM="$(     docker exec my_tmp_${NAME} npm              --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
 BIN_MDS="$(     docker exec my_tmp_${NAME} mysqldump-secure --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
-BIN_PHA="$(     docker exec my_tmp_${NAME} phalcon 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
-BIN_SYM="$(     docker exec my_tmp_${NAME} symfony --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
+BIN_PHA="$(     docker exec my_tmp_${NAME} phalcon          --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
+BIN_SYM="$(     docker exec my_tmp_${NAME} symfony          --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
 BIN_WPC="$(     docker exec my_tmp_${NAME} wp --allow-root  --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
-BIN_WEBP="$(    docker exec my_tmp_${NAME} webpack          --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
+BIN_WEBP="$(    docker exec my_tmp_${NAME} /usr/local/node/bin/webpack --version 2>/dev/null | grep -Eo '[0-9.]+' | head -1 )"
 BIN_MISC="$(    docker exec my_tmp_${NAME} ls /usr/bin/ | grep -E '(mongo|mysql|psql|pg_)' | sort -u | xargs | sed 's/\s/, /g' )"
 docker stop "$(docker ps | grep "my_tmp_${NAME}" | awk '{print $1}')"
 
