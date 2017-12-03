@@ -126,10 +126,11 @@ RUN set -x \
 	&& drush --version | grep -E '[.0-9]+'
 
 # Drupal Console
-RUN set -x \
-	&& curl https://drupalconsole.com/installer -L -o drupal.phar \
-	&& mv drupal.phar /usr/local/bin/drupal \
-	&& chmod +x /usr/local/bin/drupal
+#RUN set -x \
+#	&& curl https://drupalconsole.com/installer -L -o drupal.phar \
+#	&& mv drupal.phar /usr/local/bin/drupal \
+#	&& chmod +x /usr/local/bin/drupal \
+#	&& drupal --version | grep -E 'version\s*[.0-9]'
 
 # WP-CLI
 RUN set -x \
