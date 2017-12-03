@@ -51,6 +51,7 @@ RUN set -x \
 # Swoole
 #	&& git clone https://github.com/swoole/swoole-src /tmp/swoole-src \
 #	&& cd /tmp/swoole-src \
+#	&& git checkout v1.9.9 \
 #	&& phpize \
 #	&& ./configure \
 #		--enable-sockets \

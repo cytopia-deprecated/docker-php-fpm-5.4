@@ -155,7 +155,9 @@ RUN set -x \
 	&& mkdir -p /usr/local/src \
 	&& git clone https://github.com/cytopia/mysqldump-secure.git /usr/local/src/mysqldump-secure \
 	&& cd /usr/local/src/mysqldump-secure \
-	&& git checkout $(git describe --abbrev=0 --tags) \
+	&& git for-each-ref --sort=taggerdate --format '%(tag)' refs/tags \
+		| tail -1 \
+		| xargs git checkout \
 	&& cp /usr/local/src/mysqldump-secure/bin/mysqldump-secure /usr/local/bin \
 	&& cp /usr/local/src/mysqldump-secure/etc/mysqldump-secure.conf /etc \
 	&& cp /usr/local/src/mysqldump-secure/etc/mysqldump-secure.cnf /etc \
@@ -180,7 +182,9 @@ RUN set -x \
 	&& mkdir -p /usr/local/src \
 	&& git clone https://github.com/cytopia/awesome-ci.git /usr/local/src/awesome-ci \
 	&& cd /usr/local/src/awesome-ci \
-	&& git checkout $(git describe --abbrev=0 --tags) \
+	&& git for-each-ref --sort=taggerdate --format '%(tag)' refs/tags \
+		| tail -1 \
+		| xargs git checkout \
 	&& ./configure --prefix=/usr/local \
 	&& make install \
 	&& cd / \
