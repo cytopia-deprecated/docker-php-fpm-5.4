@@ -37,7 +37,7 @@ set_uid() {
 				fi
 			fi
 			log "info" "Changing user '${MY_USER}' uid to: ${uid_env_uid}"
-			run "usermod -u ${uid_env_uid} ${MY_USER}"
+			run "usermod -u ${uid_env_uid} ${MY_USER}" || true
 		fi
 	fi
 
@@ -76,7 +76,11 @@ set_gid() {
 				fi
 			fi
 			log "info" "Changing group '${MY_GROUP}' gid to: ${gid_env_gid}"
-			run "groupmod -g ${gid_env_gid} ${MY_GROUP}"
+			run "groupmod -g ${gid_env_gid} ${MY_GROUP}" || true
+			if [ -f /etc/alpine-release ]; then
+				run "sed -i'' 's/${MY_GROUP}:x:1000/${MY_GROUP}:x:${gid_env_gid}/' /etc/group"
+				run "sed -i'' 's/${MY_GROUP}:x:1000/${MY_GROUP}:x:${gid_env_gid}/' /etc/group-"
+			fi
 		fi
 	fi
 
