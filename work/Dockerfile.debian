@@ -94,14 +94,18 @@ RUN set -x \
 	&& rm -rf /usr/local/src/node-${VERSION}-linux-x64/LICENSE \
 	&& rm -rf /usr/local/src/node-${VERSION}-linux-x64/*.md \
 	&& rm -rf /usr/local/src/node-${VERSION}-linux-x64/include \
-	&& rm -rf /usr/local/src/node-${VERSION}-linux-x64/share
+	&& rm -rf /usr/local/src/node-${VERSION}-linux-x64/share \
+	&& npm --version | grep -E '[.0-9]+' \
+	&& node --version | grep -E '[.0-9]+'
+
 
 # Composer
 RUN set -x \
 	&& curl -sS https://getcomposer.org/installer | php \
 	&& mv composer.phar /usr/local/bin/composer \
 	&& composer self-update \
-	&& rm -rf /root/.composer
+	&& rm -rf /root/.composer \
+	&& composer --version 2>/dev/null | grep -E 'version\s*[.0-9]+'
 
 # Drush
 RUN set -x \
@@ -118,7 +122,8 @@ RUN set -x \
 	&& rm -rf /usr/local/src/drush/misc \
 	&& rm -rf /usr/local/src/drush/tests \
 	&& rm -rf /root/.drush \
-	&& rm -rf /home/${MY_USER}/.composer
+	&& rm -rf /home/${MY_USER}/.composer \
+	&& drush --version | grep -E '[.0-9]+'
 
 # Drupal Console
 RUN set -x \
@@ -131,12 +136,14 @@ RUN set -x \
 	&& curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& mv wp-cli.phar /usr/local/bin/wp \
 	&& chmod +x /usr/local/bin/wp \
-	&& wp cli update
+	&& wp cli update \
+	&& wp --allow-root --version | grep -E '[.0-9]+'
 
 # Symfony CLI
 RUN set -x \
 	&& curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
-	&& chmod +x /usr/local/bin/symfony
+	&& chmod +x /usr/local/bin/symfony \
+	&& symfony --version | grep -E 'version\s*[.0-9]+'
 
 # Laravel CLI
 RUN set -x \
@@ -148,7 +155,8 @@ RUN set -x \
 	&& su - ${MY_USER} -c 'PATH=/usr/local/bin:$PATH; cd /usr/local/src/laravel-installer && composer install' \
 	&& ln -s /usr/local/src/laravel-installer/laravel /usr/local/bin/laravel \
 	&& rm -rf /usr/local/src/laravel-installer/laravel/.git \
-	&& rm -rf /home/${MY_USER}/.composer
+	&& rm -rf /home/${MY_USER}/.composer \
+	&& laravel --version | grep -E 'version\s*[.0-9]+'
 
 # Phalcon DevTools
 RUN set -x \
@@ -159,7 +167,8 @@ RUN set -x \
 	&& bash ./phalcon.sh \
 	&& ln -s /usr/local/src/phalcon-devtools/phalcon.php /usr/local/bin/phalcon \
 	&& cd / \
-	&& rm -rf /usr/local/src/phalcon-devtools/.git
+	&& rm -rf /usr/local/src/phalcon-devtools/.git \
+	&& phalcon commands | grep -E '[.0-9]+'
 
 # Mysqldump-secure
 RUN set -x \
@@ -186,7 +195,8 @@ RUN set -x \
 	&& sed -i'' 's/^NAGIOS_LOG=.*/NAGIOS_LOG=0/g' /etc/mysqldump-secure.conf \
 	\
 	&& cd / \
-	&& rm -rf /usr/local/src/mysqldump-secure
+	&& rm -rf /usr/local/src/mysqldump-secure \
+	&& mysqldump-secure --version | grep -E 'Version:\s*[.0-9]+'
 
 # Awesome-CI
 RUN set -x \
@@ -213,11 +223,14 @@ RUN set -x \
 # Grunt
 RUN set -x \
 	&& npm install -g grunt \
-	&& npm install -g grunt-cli
+	&& npm install -g grunt-cli \
+	&& /usr/local/node/bin/grunt --version | grep -E 'v[.0-9]+'
+
 
 # Webpack
 RUN set -x \
-	&& npm install -g --save-dev webpack
+	&& npm install -g --save-dev webpack \
+	&& /usr/local/node/bin/webpack --version | grep -E '[.0-9]+'
 
 # Linuxbrew
 RUN set -x \
@@ -229,7 +242,9 @@ RUN set -x \
 	&& v="${BASH_PROFILE}" su ${MY_USER} -c -p \
 		'echo "export MANPATH=/usr/local/src/linuxbrew/share/man:${MANPATH}"   >> /home/devilbox/${v}' \
 	&& v="${BASH_PROFILE}" su ${MY_USER} -c -p \
-		'echo "export INFOPATH=/usr/local/src/linuxbrew/share/man:${INFOPATH}" >> /home/devilbox/${v}'
+		'echo "export INFOPATH=/usr/local/src/linuxbrew/share/man:${INFOPATH}" >> /home/devilbox/${v}' \
+	&& su - ${MY_USER} -c '/usr/local/src/linuxbrew/bin/brew update' \
+	&& su - ${MY_USER} -c '/usr/local/src/linuxbrew/bin/brew config' | grep -E 'HOMEBREW_VERSION:\s*[.0-9]+'
 
 
 
