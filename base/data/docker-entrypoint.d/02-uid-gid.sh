@@ -77,9 +77,13 @@ set_gid() {
 			fi
 			log "info" "Changing group '${MY_GROUP}' gid to: ${gid_env_gid}"
 			run "groupmod -g ${gid_env_gid} ${MY_GROUP}" || true
+			# groupmod does not work on Alpine 3.4
 			if [ -f /etc/alpine-release ]; then
 				run "sed -i'' 's/${MY_GROUP}:x:1000/${MY_GROUP}:x:${gid_env_gid}/' /etc/group"
 				run "sed -i'' 's/${MY_GROUP}:x:1000/${MY_GROUP}:x:${gid_env_gid}/' /etc/group-"
+				the_uid="$( grep "${MY_USER}" /etc/passwd | awk -F':' '{print $3}' )"
+				the_gid="$( grep "${MY_USER}" /etc/passwd | awk -F':' '{print $4}' )"
+				run "sed -i'' 's/^${MY_USER}:x:${the_uid}:${the_gid}/${MY_USER}:x:${the_uid}:${gid_env_gid}/' /etc/passwd"
 			fi
 		fi
 	fi
