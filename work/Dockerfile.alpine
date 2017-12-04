@@ -90,6 +90,7 @@ RUN set -x \
 	&& curl -sS https://getcomposer.org/installer | php \
 	&& mv composer.phar /usr/local/bin/composer \
 	&& composer self-update \
+	&& composer --version 2>/dev/null | grep -E 'version\s*[.0-9]+' \
 	&& rm -rf /root/.composer
 
 # Drush
@@ -101,6 +102,7 @@ RUN set -x \
 	&& v="${DRUSH_VERSION}" su ${MY_USER} -p -c 'cd /usr/local/src/drush && git checkout ${v}' \
 	&& su - ${MY_USER} -c 'PATH=/usr/local/bin:$PATH; cd /usr/local/src/drush && composer install --no-interaction --no-progress' \
 	&& ln -s /usr/local/src/drush/drush /usr/local/bin/drush \
+	&& drush --version | grep -E '[.0-9]+' \
 	&& rm -rf /usr/local/src/drush/.git \
 	&& rm -rf /usr/local/src/drush/docs \
 	&& rm -rf /usr/local/src/drush/examples \
@@ -110,22 +112,25 @@ RUN set -x \
 	&& rm -rf /home/${MY_USER}/.composer
 
 # Drupal Console
-RUN set -x \
-	&& curl https://drupalconsole.com/installer -L -o drupal.phar \
-	&& mv drupal.phar /usr/local/bin/drupal \
-	&& chmod +x /usr/local/bin/drupal
+#RUN set -x \
+#	&& curl https://drupalconsole.com/installer -L -o drupal.phar \
+#	&& mv drupal.phar /usr/local/bin/drupal \
+#	&& chmod +x /usr/local/bin/drupal \
+#	&& drupal --version | grep -E 'version\s*[.0-9]'
 
 # WP-CLI
 RUN set -x \
 	&& curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& mv wp-cli.phar /usr/local/bin/wp \
 	&& chmod +x /usr/local/bin/wp \
-	&& wp cli update
+	&& wp cli update \
+	&& wp --allow-root --version | grep -E '[.0-9]+'
 
 # Symfony CLI
 RUN set -x \
 	&& curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
-	&& chmod +x /usr/local/bin/symfony
+	&& chmod +x /usr/local/bin/symfony \
+	&& symfony --version | grep -E 'version\s*[.0-9]+'
 
 # Laravel CLI
 RUN set -x \
@@ -137,6 +142,7 @@ RUN set -x \
 	&& su - ${MY_USER} -c 'PATH=/usr/local/bin:$PATH; cd /usr/local/src/laravel-installer && composer install' \
 	&& ln -s /usr/local/src/laravel-installer/laravel /usr/local/bin/laravel \
 	&& rm -rf /usr/local/src/laravel-installer/laravel/.git \
+	&& laravel --version | grep -E 'version\s*[.0-9]+' \
 	&& rm -rf /home/${MY_USER}/.composer
 
 # Phalcon DevTools
@@ -148,7 +154,8 @@ RUN set -x \
 	&& bash ./phalcon.sh \
 	&& ln -s /usr/local/src/phalcon-devtools/phalcon.php /usr/local/bin/phalcon \
 	&& cd / \
-	&& rm -rf /usr/local/src/phalcon-devtools/.git
+	&& rm -rf /usr/local/src/phalcon-devtools/.git \
+	&& phalcon commands | grep -E '[.0-9]+'
 
 # Mysqldump-secure
 RUN set -x \
@@ -175,7 +182,8 @@ RUN set -x \
 	&& sed -i'' 's/^NAGIOS_LOG=.*/NAGIOS_LOG=0/g' /etc/mysqldump-secure.conf \
 	\
 	&& cd / \
-	&& rm -rf /usr/local/src/mysqldump-secure
+	&& rm -rf /usr/local/src/mysqldump-secure \
+	&& mysqldump-secure --version | grep -E 'Version:\s*[.0-9]+'
 
 # Awesome-CI
 RUN set -x \
@@ -197,16 +205,28 @@ RUN set -x \
 	&& npm install -g eslint \
 	&& npm install -g jsonlint \
 	&& npm install -g mdlint \
-	&& npm install -g gulp
+	&& npm install -g gulp \
+	&& rm -rf /root/.gem \
+	&& rm -rf /root/.npm \
+	&& rm -rf /root/.config \
+	&& rm -rf /tmp/*
 
 # Grunt
 RUN set -x \
 	&& npm install -g grunt \
-	&& npm install -g grunt-cli
+	&& npm install -g grunt-cli \
+	&& grunt --version | grep -E 'v[.0-9]+' \
+	&& rm -rf /root/.npm \
+	&& rm -rf /root/.config \
+	&& rm -rf /tmp/*
 
 # Webpack
 RUN set -x \
-	&& npm install -g --save-dev webpack
+	&& npm install -g --save-dev webpack \
+	&& webpack --version | grep -E '[.0-9]+' \
+	&& rm -rf /root/.npm \
+	&& rm -rf /root/.config \
+	&& rm -rf /tmp/*
 
 # Linuxbrew
 RUN set -x \
@@ -218,7 +238,10 @@ RUN set -x \
 	&& v="${BASH_PROFILE}" su ${MY_USER} -c -p \
 		'echo "export MANPATH=/usr/local/src/linuxbrew/share/man:${MANPATH}"   >> /home/devilbox/${v}' \
 	&& v="${BASH_PROFILE}" su ${MY_USER} -c -p \
-		'echo "export INFOPATH=/usr/local/src/linuxbrew/share/man:${INFOPATH}" >> /home/devilbox/${v}'
+		'echo "export INFOPATH=/usr/local/src/linuxbrew/share/man:${INFOPATH}" >> /home/devilbox/${v}' \
+	&& su - ${MY_USER} -c '/usr/local/src/linuxbrew/bin/brew update' \
+	&& su - ${MY_USER} -c '/usr/local/src/linuxbrew/bin/brew config' | grep -E 'HOMEBREW_VERSION:\s*[.0-9]+' \
+	&& rm -rf /home/${MY_USER}/.cache
 
 
 

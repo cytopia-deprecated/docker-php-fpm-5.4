@@ -96,16 +96,16 @@ RUN set -x \
 	&& rm -rf /usr/local/src/node-${VERSION}-linux-x64/include \
 	&& rm -rf /usr/local/src/node-${VERSION}-linux-x64/share \
 	&& npm --version | grep -E '[.0-9]+' \
-	&& node --version | grep -E '[.0-9]+'
-
+	&& node --version | grep -E '[.0-9]+' \
+	&& rm -rf /root/.config
 
 # Composer
 RUN set -x \
 	&& curl -sS https://getcomposer.org/installer | php \
 	&& mv composer.phar /usr/local/bin/composer \
 	&& composer self-update \
-	&& rm -rf /root/.composer \
-	&& composer --version 2>/dev/null | grep -E 'version\s*[.0-9]+'
+	&& composer --version 2>/dev/null | grep -E 'version\s*[.0-9]+' \
+	&& rm -rf /root/.composer
 
 # Drush
 RUN set -x \
@@ -116,14 +116,14 @@ RUN set -x \
 	&& v="${DRUSH_VERSION}" su ${MY_USER} -p -c 'cd /usr/local/src/drush && git checkout ${v}' \
 	&& su - ${MY_USER} -c 'PATH=/usr/local/bin:$PATH; cd /usr/local/src/drush && composer install --no-interaction --no-progress' \
 	&& ln -s /usr/local/src/drush/drush /usr/local/bin/drush \
+	&& drush --version | grep -E '[.0-9]+' \
 	&& rm -rf /usr/local/src/drush/.git \
 	&& rm -rf /usr/local/src/drush/docs \
 	&& rm -rf /usr/local/src/drush/examples \
 	&& rm -rf /usr/local/src/drush/misc \
 	&& rm -rf /usr/local/src/drush/tests \
 	&& rm -rf /root/.drush \
-	&& rm -rf /home/${MY_USER}/.composer \
-	&& drush --version | grep -E '[.0-9]+'
+	&& rm -rf /home/${MY_USER}/.composer
 
 # Drupal Console
 #RUN set -x \
@@ -156,8 +156,8 @@ RUN set -x \
 	&& su - ${MY_USER} -c 'PATH=/usr/local/bin:$PATH; cd /usr/local/src/laravel-installer && composer install' \
 	&& ln -s /usr/local/src/laravel-installer/laravel /usr/local/bin/laravel \
 	&& rm -rf /usr/local/src/laravel-installer/laravel/.git \
-	&& rm -rf /home/${MY_USER}/.composer \
-	&& laravel --version | grep -E 'version\s*[.0-9]+'
+	&& laravel --version | grep -E 'version\s*[.0-9]+' \
+	&& rm -rf /home/${MY_USER}/.composer
 
 # Phalcon DevTools
 RUN set -x \
@@ -219,19 +219,28 @@ RUN set -x \
 	&& npm install -g eslint \
 	&& npm install -g jsonlint \
 	&& npm install -g mdlint \
-	&& npm install -g gulp
+	&& npm install -g gulp \
+	&& rm -rf /root/.gem \
+	&& rm -rf /root/.npm \
+	&& rm -rf /root/.config \
+	&& rm -rf /tmp/*
 
 # Grunt
 RUN set -x \
 	&& npm install -g grunt \
 	&& npm install -g grunt-cli \
-	&& /usr/local/node/bin/grunt --version | grep -E 'v[.0-9]+'
-
+	&& /usr/local/node/bin/grunt --version | grep -E 'v[.0-9]+' \
+	&& rm -rf /root/.npm \
+	&& rm -rf /root/.config \
+	&& rm -rf /tmp/*
 
 # Webpack
 RUN set -x \
 	&& npm install -g --save-dev webpack \
-	&& /usr/local/node/bin/webpack --version | grep -E '[.0-9]+'
+	&& /usr/local/node/bin/webpack --version | grep -E '[.0-9]+' \
+	&& rm -rf /root/.npm \
+	&& rm -rf /root/.config \
+	&& rm -rf /tmp/*
 
 # Linuxbrew
 RUN set -x \
@@ -245,7 +254,8 @@ RUN set -x \
 	&& v="${BASH_PROFILE}" su ${MY_USER} -c -p \
 		'echo "export INFOPATH=/usr/local/src/linuxbrew/share/man:${INFOPATH}" >> /home/devilbox/${v}' \
 	&& su - ${MY_USER} -c '/usr/local/src/linuxbrew/bin/brew update' \
-	&& su - ${MY_USER} -c '/usr/local/src/linuxbrew/bin/brew config' | grep -E 'HOMEBREW_VERSION:\s*[.0-9]+'
+	&& su - ${MY_USER} -c '/usr/local/src/linuxbrew/bin/brew config' | grep -E 'HOMEBREW_VERSION:\s*[.0-9]+' \
+	&& rm -rf /home/${MY_USER}/.cache
 
 
 
