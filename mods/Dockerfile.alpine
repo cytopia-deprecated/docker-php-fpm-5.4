@@ -104,7 +104,7 @@ RUN set -x \
 	&& echo "extension=redis.so"          > /usr/local/etc/php.d/redis.ini \
 #	&& echo "extension=swoole.so"         > /usr/local/etc/php.d/swoole.ini \
 	&& echo "extension=uploadprogress.so" > /usr/local/etc/php.d/uploadprogress.ini \
-	&& echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20100525/xdebug.so" > /usr/local/etc/php.d/xdebug.ini \
+	&& echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php.d/xdebug.ini \
 	\
 	&& { \
 		find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + \
